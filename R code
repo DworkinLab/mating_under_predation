@@ -1,0 +1,8 @@
+install.packages("dplyr")
+copulation <- read.csv("Mature.csv",h=T)
+courtship <- read.csv("Immature.csv",h=T)
+barplot(copulation$Cop_latency, names.arg = copulation$Fly_ID)
+barplot(copulation$Cop_Duration, names.arg = copulation$Fly_ID)
+summary(courtship)
+courtship$Fly_ID <- with(courtship, paste0(courtship$Box,courtship$Date,courtship$Replicate, courtship$Vial_number))
+courtship$Fly_ID
