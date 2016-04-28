@@ -62,6 +62,45 @@ lessBy_flyID
 summary(lessBy_flyID)
 ```
 
+But incorrect: need relative start times: needs to be start time of behaviour (just found above in seconds) minus the observation initiation
+```
+courtship$relativeStartTimeSeconds <- (courtship$startTimeSeconds - courtship$Observation.Initiation)
+courtship$relativeStartTimeSeconds
+head(courtship)
+
+lessBy_flyID2 <- subset(courtship, relativeStartTimeSeconds < 900)
+head(lessBy_flyID2)
+summary(lessBy_flyID2)
+```
+
+```
+by_FlyID2 <- group_by(lessBy_flyID2,Fly_ID)
+head(by_FlyID2)
+```
+
+```
+courtSum <- summarise(by_FlyID2)
+head(courtSum)
+courtSum
+```
+- Output is just single group names
+
+Appears to be a new file with each Fly_Id summed and the number of bouts counted
+- should be only those that start the bout before the relative 900 seconds
+- will include total times that go over the time limit (started before 900 but continued up to whenever
+- find a way to cap this at 900 (the courtship duration + start time < 900 or something???)
+
+```
+courtSum <- summarise(by_FlyID2, sum = sum(court_duration), count = n())
+head(courtSum)
+courtSum
+
+barplot(courtSum$sum, names.arg = courtSum$Fly_ID)
+barplot(courtSum$count, names.arg = courtSum$Fly_ID)
+```
+
+
+
 
 
 
