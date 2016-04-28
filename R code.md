@@ -1,19 +1,27 @@
+```
 install.packages("dplyr")
 # dpylr recommended by Ian
+```
 
+```
 copulation <- read.csv("Mature.csv",h=T)
 courtship <- read.csv("Immature.csv",h=T)
 # Bring in data from working directory (getwd())
+```
 
+```
 barplot(copulation$Cop_latency, names.arg = copulation$Fly_ID)
 barplot(copulation$Cop_Duration, names.arg = copulation$Fly_ID)
 # Quick view of both in copulation
+```
 
+```
 summary(courtship)
 # need each fly with specific ID
 courtship$Fly_ID <- with(courtship, paste0(courtship$Box,courtship$Date,courtship$Replicate, courtship$Vial_number))
 courtship$Fly_ID
-
+```
+```
 # Need to keep times above 900 seconds for observation (15 minutes)
 # Make start time in seconds: currently in HH:MM:SS
 # Easiest method = trial end minus court duration
@@ -23,5 +31,9 @@ courtship$startTimeSeconds
 # One value is negative, not sure why? changed to time 0 (delay in program starting vs. behaviour input)
 courtship$startTimeSeconds[1339]
 courtship$startTimeSeconds[1339] = 0
+```
+
+
+
 
 
