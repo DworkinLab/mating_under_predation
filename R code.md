@@ -99,6 +99,15 @@ barplot(courtSum$sum, names.arg = courtSum$Fly_ID)
 barplot(courtSum$count, names.arg = courtSum$Fly_ID)
 ```
 
+Only values within 900 seconds
+1) convrt start times to seconds (done above)
+2) create relative start times (starttimeseconds - observationInitiation)
+3) relative trial latency at end (based on observation initiation corrected to T = 0 == relative start time -court duration)
+4) 900 seconds - relative trial latency (transition step: anything negative = value over 900)
+5) relative under 900 trial latency  = IF(900-relativetriallatency < 0, relative trial latency + (900 - relative trial latency), else relaitve trial latency)
+  - With this one: worked in Excel that if value negative (distance from 900), that number is removed and the length at end now corrected to 900, or else the length is just the lenth
+  
+- This will need to be done with the 900 second limit to the start time from before.
 
 
 
