@@ -133,8 +133,168 @@ In if (courtship$nineHundredrelative < 0) courtship$relativeTrialLatency +  :
   
 ```
 
+### Random code, myself and Ian
+
+```
+#install.packages("dplyr")
+library(dplyr)
+library(lme4)
+library(effects)
+copulation <- read.csv("Mature.csv",h=T)
+courtship <- read.csv("Immature.csv",h=T)
+barplot(copulation$Cop_latency, names.arg = copulation$Fly_ID)
+barplot(copulation$Cop_Duration, names.arg = copulation$Fly_ID)
+summary(courtship)
+courtship$Fly_ID <- with(courtship, paste0(courtship$Box,courtship$Date,courtship$Replicate, courtship$Vial_number))
+courtship$Fly_ID
+courtship$startTimeSeconds <- (courtship$trial_latency_behav_end - courtship$court_duration)
+courtship$startTimeSeconds[1339]
+courtship$startTimeSeconds[1339] = 0
+by_FlyID <- group_by(courtship,Fly_ID)
+by_FlyID
+summary(by_FlyID)
+#lessBy_flyID <- group_by(by_FlyID, startTimeSeconds < 900)
+#lessBy_flyID
+#summary(lessBy_flyID)
+
+#lessBy_flyID <- subset(by_FlyID, startTimeSeconds < 900)
+#lessBy_flyID
+#summary(lessBy_flyID)
+
+courtship$relativeStartTimeSeconds <- (courtship$startTimeSeconds - courtship$Observation.Initiation)
+courtship$relativeStartTimeSeconds
+head(courtship)
+
+lessBy_flyID2 <- subset(courtship, relativeStartTimeSeconds < 900)
+head(lessBy_flyID2)
+summary(lessBy_flyID2)
+
+by_FlyID2 <- group_by(lessBy_flyID2,Fly_ID)
+head(by_FlyID2)
+
+courtSum <- summarise(by_FlyID2, sum = sum(court_duration), count = n())
+head(courtSum)
+courtSum
+
+#Quick and cheap visualization
+boxplot(courtSum$sum, names.arg = courtSum$Fly_ID)
+boxplot(courtSum$count, names.arg = courtSum$Fly_ID)
+boxplot(courtSum$sum/900, names.arg = courtSum$Fly_ID)
+
+lessBy_flyID2$relativeTrialLatency <- (lessBy_flyID$relativeStartTimeSeconds + lessBy_flyID2$court_duration)
+
+courtship$relativeTrialLatency <- (courtship$relativeStartTimeSeconds + courtship$court_duration)
+courtship$nineHundredrelative <- (900 - courtship$relativeTrialLatency)
+
+courtship$nineHundredrelative
+
+courtship$relative900trialLatency <- if (courtship$nineHundredrelative<0) courtship$relativeTrialLatency+courtship$nineHundredrelative else courtship$relativeTrialLatency
+courtship$relative900trialLatency
 
 
+# Create a data frame for the predictor variables and for Fly_ID
+pred_var_dat <- subset(courtship, select = c(Box, Date, Replicate, Vial_number, Temp, Humidity, BP.12.00.am, BP.8.00.Am, BP.Room,
+                                             Observation.Initiation, Fly_ID))
+# Make data frame only include unique values (i.e. remove duplicate rows)
+pred_var_dat <- unique(pred_var_dat) 
+
+# Currently courtSum is a dplyr data table (tbl_df). Not sure if it will merge properly with a regular data frame
+# Seems to work
+courtship_for_analysis <- merge(x = pred_var_dat, y = courtSum, by.x="Fly_ID", by.y="Fly_ID")
+
+with(courtship_for_analysis,
+     boxplot(sum ~ Box))
+
+with(courtship_for_analysis,
+     boxplot(sum ~ Date))
+
+
+# A simple version of the analysis
+courtship_for_analysis$TempCent <- scale(courtship_for_analysis$Temp, scale=F)
+courtship_model1 <- lmer(sum ~ Box + Replicate + TempCent + Humidity + BP.Room + (1|Date), 
+                         data = courtship_for_analysis)
+summary(courtship_model1)
+
+plot(allEffects(courtship_model1))
+
+plot(effect("Box", courtship_model1))
+
+```
+
+New Nicer set up of code
+
+```
+#install.packages("dplyr")
+library(dplyr)
+library(lme4)
+library(effects)
+
+# Bring in the data for mature females (copulation) and Immautre females (courtship)
+copulation <- read.csv("Mature.csv",h=T)
+courtship <- read.csv("Immature.csv",h=T)
+
+# Create unique Fly_ID for each individual with Box (treatment), date, replicate, and vial Number
+courtship$Fly_ID <- with(courtship, paste0(courtship$Box,courtship$Date,courtship$Replicate, courtship$Vial_number))
+courtship$Fly_ID
+
+# Change time (in HH:MM:SS) format to seconds (One had a value of -1, not sure, but changed to 0)
+courtship$startTimeSeconds <- (courtship$trial_latency_behav_end - courtship$court_duration)
+courtship$startTimeSeconds[1339]
+courtship$startTimeSeconds[1339] = 0
+
+# Create new column of relative values for courtship start times (i.e so Observation all start at Time = 0)
+courtship$relativeStartTimeSeconds <- (courtship$startTimeSeconds - courtship$Observation.Initiation)
+courtship$relativeStartTimeSeconds
+
+# New column for relative values of trial duration at end of behaviour
+courtship$relativeTrial_latency_end <- (courtship$relativeStartTimeSeconds + courtship$court_duration)
+courtship$relativeTrial_latency_end
+
+# Need to get all courtship under 900 seconds (relative court duration)
+#First, transition step for finding values ending abov 900
+courtship$nineHundredTransition <- (900 - courtship$relativeTrial_latency_end)
+# Second, if value for nineHundredTransition is negative, equate it to 900, all else stay as relativeTrial_latency_end
+courtship$relativeTrialLatency900 <- ifelse(courtship$nineHundredTransition<0,900,courtship$relativeTrial_latency_end)
+# Third, relative courtship duration (not including values over 900)
+courtship$relativeCourtDuration <- (courtship$relativeTrialLatency900 - courtship$relativeStartTimeSeconds)
+
+head(courtship)
+
+startLess900 <- subset(courtship, relativeCourtDuration>0)
+summary(startLess900)
+
+
+
+# Create a data frame for the predictor variables and for Fly_ID
+pred_var_dat <- subset(courtship, select = c(Box, Date, Replicate, Vial_number, Temp, Humidity, BP.12.00.am, BP.8.00.Am, BP.Room,
+                                             Observation.Initiation, Fly_ID))
+# Make data frame only include unique values (i.e. remove duplicate rows)
+pred_var_dat <- unique(pred_var_dat) 
+
+#
+
+
+# Currently courtSum is a dplyr data table (tbl_df). Not sure if it will merge properly with a regular data frame
+# Seems to work
+courtship_for_analysis <- merge(x = pred_var_dat, y = courtSum, by.x="Fly_ID", by.y="Fly_ID")
+
+with(courtship_for_analysis,
+     boxplot(sum ~ Box))
+
+with(courtship_for_analysis,
+     boxplot(sum ~ Date))
+
+
+# A simple version of the analysis
+courtship_for_analysis$TempCent <- scale(courtship_for_analysis$Temp, scale=F)
+courtship_model1 <- lmer(sum ~ Box + Replicate + TempCent + Humidity + BP.Room + (1|Date), 
+                         data = courtship_for_analysis)
+summary(courtship_model1)
+
+plot(allEffects(courtship_model1))
+
+plot(effect("Box", courtship_model1))
+```
 
 
 
