@@ -100,14 +100,40 @@ barplot(courtSum$count, names.arg = courtSum$Fly_ID)
 ```
 
 Only values within 900 seconds
+
 1) convrt start times to seconds (done above)
-2) create relative start times (starttimeseconds - observationInitiation)
+
+2) create relative start times (starttimeseconds - observationInitiation) Done above
+
 3) relative trial latency at end (based on observation initiation corrected to T = 0 == relative start time -court duration)
+
 4) 900 seconds - relative trial latency (transition step: anything negative = value over 900)
+
 5) relative under 900 trial latency  = IF(900-relativetriallatency < 0, relative trial latency + (900 - relative trial latency), else relaitve trial latency)
   - With this one: worked in Excel that if value negative (distance from 900), that number is removed and the length at end now corrected to 900, or else the length is just the lenth
   
 - This will need to be done with the 900 second limit to the start time from before.
+-   Using lessBy_flyID2
+```
+lessBy_flyID2$relativeTrialLatency <- (lessBy_flyID$relativeStartTimeSeconds + lessBy_flyID2$court_duration)
+Error in `$<-.data.frame`(`*tmp*`, "relativeTrialLatency", value = numeric(0)) : 
+  replacement has 0 rows, data has 1693
+```
+Not sure the problem
+= maybe first do all calculations in courtship
+```
+courtship$relativeTrialLatency <- (courtship$relativeStartTimeSeconds + courtship$court_duration)
+
+courtship$nineHundredrelative <- (900 - courtship$relativeTrialLatency)
+
+> courtship$relative900trialLatency <- if (courtship$nineHundredrelative<0) courtship$relativeTrialLatency+courtship$nineHundredrelative else courtship$relativeTrialLatency
+Warning message:
+In if (courtship$nineHundredrelative < 0) courtship$relativeTrialLatency +  :
+  the condition has length > 1 and only the first element will be used
+  
+```
+
+
 
 
 
