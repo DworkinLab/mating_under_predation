@@ -271,7 +271,13 @@ pred_var_dat <- subset(courtship, select = c(Box, Date, Replicate, Vial_number, 
 # Make data frame only include unique values (i.e. remove duplicate rows)
 pred_var_dat <- unique(pred_var_dat) 
 
-#
+# Create a group by Fly_Id
+FlyID <- group_by(startLess900,Fly_ID)
+head(FlyID)
+
+courtSum <- summarise(FlyID, sum = sum(relativeCourtDuration), count = n())
+head(courtSum)
+courtSum
 
 
 # Currently courtSum is a dplyr data table (tbl_df). Not sure if it will merge properly with a regular data frame
