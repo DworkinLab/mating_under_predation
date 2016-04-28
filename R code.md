@@ -53,8 +53,10 @@ Needed library("dplyr") at start
 by_FlyID <- group_by(courtship,Fly_ID)
 by_FlyID
 summary(by_FlyID)
-
-
+```
+Need values for less than 15 minutes (900 seconds)
+- 1st: nothing that started after 900 seconds
+```
 lessBy_flyID <- subset(by_FlyID, startTimeSeconds < 900)
 lessBy_flyID
 summary(lessBy_flyID)
