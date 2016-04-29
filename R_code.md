@@ -205,14 +205,14 @@ plot(effect("Box", courtship_model1), main = "Male Time Courting of Immature Fem
      ylab = "Time courting (sec)", xlab = "Treatment")
 ```
 ![court_sum]
-(https://github.com/PaulKnoops/mating_under_predation/blob/master/Rplot%20-%20court_imm_sum.png)
+(https://github.com/PaulKnoops/mating_under_predation/blob/master/Rplot%20-%20court_sum.png)
 
 ```
 plot(effect("Box", courtship_model2), main = "Number of Male Courtship Bouts to Immature Female in 900 Seconds",
      ylab = "Courtship Bouts", xlab = "Treatment")
 ```
 ![court_count]
-(https://github.com/PaulKnoops/mating_under_predation/blob/master/Rplot%20-%20court_count.png)
+(https://github.com/PaulKnoops/mating_under_predation/blob/master/Rplot-%20court_count2.png)
 
 # Copulation Analysis
 
