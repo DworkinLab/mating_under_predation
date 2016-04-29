@@ -193,12 +193,12 @@ BPCent      -0.100  0.007  0.088  0.229 -0.770
 plot(allEffects(courtship_model1))
 ```
 ![alleffetsmodel1]
-(https://github.com/PaulKnoops/mating_under_predation/blob/master/Rplot%20-%20AllEffects_courtshipModel1.png)
+(https://github.com/PaulKnoops/mating_under_predation/blob/master/Rplot%20-%20alleffects_court_sum.png)
 ```
 plot(allEffects(courtship_model2))
 ```
 ![alleffectsmodel2]
-(https://github.com/PaulKnoops/mating_under_predation/blob/master/Rplot%20-%20alleffects_courtshipModel2.png)
+(https://github.com/PaulKnoops/mating_under_predation/blob/master/Rplot%20-%20alleffects_court_count.png)
 
 ```
 plot(effect("Box", courtship_model1), main = "Male Time Courting of Immature Female in 900 Seconds",
