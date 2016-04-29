@@ -243,30 +243,121 @@ copul_for_analysis$BPCent <- scale(copul_for_analysis$deltaBP, scale = F)
 copul_model1 <- lmer(Cop_latency ~ Box + Replicate + TempCent + HumCent + BPCent + (1|Date), data = copul_for_analysis)
 summary(copul_model1)
 ```
+```
+> summary(copul_model1)
+Linear mixed model fit by REML ['lmerMod']
+Formula: Cop_latency ~ Box + Replicate + TempCent + HumCent + BPCent +      (1 | Date)
+   Data: copul_for_analysis
+
+REML criterion at convergence: 2039.3
+
+Scaled residuals: 
+    Min      1Q  Median      3Q     Max 
+-1.2829 -0.6276 -0.3544  0.3372  3.8892 
+
+Random effects:
+ Groups   Name        Variance Std.Dev.
+ Date     (Intercept)      0     0.0   
+ Residual             160489   400.6   
+Number of obs: 142, groups:  Date, 6
+
+Fixed effects:
+            Estimate Std. Error t value
+(Intercept)  263.453     90.713   2.904
+BoxPredator   40.212     67.523   0.596
+Replicate      3.726     36.116   0.103
+TempCent     -28.806     86.581  -0.333
+HumCent       62.495     56.581   1.105
+BPCent       102.512    175.265   0.585
+
+Correlation of Fixed Effects:
+            (Intr) BxPrdt Replct TmpCnt HumCnt
+BoxPredator -0.395                            
+Replicate   -0.853  0.033                     
+TempCent    -0.282 -0.008  0.339              
+HumCent      0.079  0.025 -0.104 -0.523       
+BPCent      -0.099  0.035  0.103  0.272 -0.745
+```
+
 
 ```
 copul_model2 <- lmer(Cop_Duration ~ Box + Replicate + TempCent + HumCent + BPCent + (1|Date), data = copul_for_analysis)
 summary(copul_model2)
 ```
+```
+> summary(copul_model2)
+Linear mixed model fit by REML ['lmerMod']
+Formula: Cop_Duration ~ Box + Replicate + TempCent + HumCent + BPCent +      (1 | Date)
+   Data: copul_for_analysis
+
+REML criterion at convergence: 2067.5
+
+Scaled residuals: 
+    Min      1Q  Median      3Q     Max 
+-1.4292 -1.0166  0.3374  0.8474  1.6397 
+
+Random effects:
+ Groups   Name        Variance Std.Dev.
+ Date     (Intercept)      0     0.0   
+ Residual             197396   444.3   
+Number of obs: 142, groups:  Date, 6
+
+Fixed effects:
+            Estimate Std. Error t value
+(Intercept)   531.45     100.60   5.283
+BoxPredator   -34.13      74.89  -0.456
+Replicate     -17.03      40.05  -0.425
+TempCent      -83.04      96.02  -0.865
+HumCent        75.62      62.75   1.205
+BPCent        -35.86     194.37  -0.184
+
+Correlation of Fixed Effects:
+            (Intr) BxPrdt Replct TmpCnt HumCnt
+BoxPredator -0.395                            
+Replicate   -0.853  0.033                     
+TempCent    -0.282 -0.008  0.339              
+HumCent      0.079  0.025 -0.104 -0.523       
+BPCent      -0.099  0.035  0.103  0.272 -0.745
+
+```
 
 ```
 with(copul_for_analysis, boxplot(Cop_latency ~ Box))
 ```
+![cop_lat]
+(https://github.com/PaulKnoops/mating_under_predation/blob/master/Rplot%20-%20cop_lat.png)
 
 ```
 with(copul_for_analysis, boxplot(Cop_Duration ~ Box))
 ```
+![cop_dur]
+(https://github.com/PaulKnoops/mating_under_predation/blob/master/Rplot%20-%20op_dur.png)
 
 ```
 plot(allEffects(copul_model1))
 ```
+![alleffects_lat]
+(https://github.com/PaulKnoops/mating_under_predation/blob/master/Rplot%20-%20alleffects_cop_lat.png)
+(https://github.com/PaulKnoops/mating_under_predation/blob/master/Rplot%20-%20alleffects_cop_dur.png)
+
+```
+plot(allEffects(copul_model2))
+```
+![alleffects_dur]
+(https://github.com/PaulKnoops/mating_under_predation/blob/master/Rplot%20-%20alleffects_cop_dur.png)
 
 ```
 plot(effect("Box", copul_model1), main = "Mature Female Copulation Latency Rates with/without predator",
      ylab = "Copulation Latency (Sec)", xlab = "Treatment")
 ```
 
+![plot_latency]
+(https://github.com/PaulKnoops/mating_under_predation/blob/master/Rplot%20-%20cop_latency_effects.png)
+
 ```
 plot(effect("Box", copul_model2), main = "Mature Female Copulation Duration Rates with/without predator",
      ylab = "Copulation Latency (Sec)", xlab="Treatment")
 ```
+
+![plot_duration]
+(https://github.com/PaulKnoops/mating_under_predation/blob/master/Rplot%20-%20Cop_duration_effects.png)
