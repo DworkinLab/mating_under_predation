@@ -161,7 +161,7 @@ BPCent    -0.097 -0.007  0.088  0.229 -0.770
 ```
 plot(allEffects(courtship_model1))
 ```
-
+Rplot- allEffects_courtshipSum.png
 
 ```
 plot(effect("Box", courtship_model1))
