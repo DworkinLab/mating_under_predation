@@ -306,3 +306,4 @@ plot(effect("Box", courtship_model1))
 
 
 
+
