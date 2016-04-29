@@ -361,3 +361,48 @@ plot(effect("Box", copul_model2), main = "Mature Female Copulation Duration Rate
 
 ![plot_duration]
 (https://github.com/PaulKnoops/mating_under_predation/blob/master/Rplot%20-%20Cop_duration_effects.png)
+
+
+
+#Removing all values with no copulation
+```
+LatCop2 <- distinct(select(copulation, Cop_latency, Cop_Duration, Fly_ID))
+head(LatCop2)
+d<-d[!(d$A=="B" & d$E==0),]
+LatCop2 <- LatCop2[!(LatCop2$Cop_latency==0),]
+LatCop2
+dim(LatCop2)
+copul_for_analysis2 <- merge(x = cop_data, y = LatCop2, by.x="Fly_ID", by.y="Fly_ID")
+copul_for_analysis2$TempCent <- scale(copul_for_analysis2$Temp, scale=F)
+copul_for_analysis2$HumCent <- scale(copul_for_analysis2$Humidity, scale = F)
+copul_for_analysis2$BPCent <- scale(copul_for_analysis2$deltaBP, scale = F)
+copul_model12 <- lmer(Cop_latency ~ Box + Replicate + TempCent + HumCent + BPCent + (1|Date), data = copul_for_analysis2)
+copul_model22 <- lmer(Cop_Duration ~ Box + Replicate + TempCent + HumCent + BPCent + (1|Date), data = copul_for_analysis2)
+summary(copul_model12)
+summary(copul_model22)
+```
+
+```
+plot(effect("Box", copul_model12), main = "Mature Female Copulation Latency Rates with/without predator, 0 removed",
+     ylab = "Copulation Latency (Sec)", xlab = "Treatment")
+```
+![0copLat]
+(https://github.com/PaulKnoops/mating_under_predation/blob/master/Rplot%20-%20cop_lat_0.png)
+
+```
+plot(effect("Box", copul_model22), main = "Mature Female Copulation Duration Rates with/without predator, 0's removed",
+     ylab = "Copulation Latency (Sec)", xlab="Treatment")
+```
+![0copdur]
+(https://github.com/PaulKnoops/mating_under_predation/blob/master/Rplot%20-%20cop_dur_0.png)
+
+```
+with(copul_for_analysis2, boxplot(Cop_latency ~ Box))
+```
+![0boxcoplat]
+(https://github.com/PaulKnoops/mating_under_predation/blob/master/Rplot%20copBox_lat_0.png)
+```
+with(copul_for_analysis2, boxplot(Cop_Duration ~ Box))
+```
+![0boxcopdur]
+(https://github.com/PaulKnoops/mating_under_predation/blob/master/Rplot%20-%20copBox_dur_0.png)
