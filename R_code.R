@@ -7,14 +7,18 @@ library(effects)
 copulation <- read.csv("Mature.csv",h=T)
 courtship <- read.csv("Immature.csv",h=T)
 
+# Courtship Analysis
+#
+#
+
 # Create unique Fly_ID for each individual with Box (treatment), date, replicate, and vial Number
 courtship$Fly_ID <- with(courtship, paste0(courtship$Box,courtship$Date,courtship$Replicate, courtship$Vial_number))
 courtship$Fly_ID
 
-# Create Delta BP
+# Create Delta BP (Barometric pressure difference 8 hours before experiment)
 courtship$deltaBP <- (courtship$BP.12.00.am - courtship$BP.8.00.Am)
 
-# Change time (in HH:MM:SS) format to seconds (One had a value of -1, not sure, but changed to 0)
+# Change time start of behaviour (in HH:MM:SS format) to seconds (One had a value of -1, not sure, but changed to 0)
 courtship$startTimeSeconds <- (courtship$trial_latency_behav_end - courtship$court_duration)
 courtship$startTimeSeconds[1339]
 courtship$startTimeSeconds[1339] = 0
@@ -77,7 +81,79 @@ courtship_model1 <- lmer(sum ~ Box + Replicate + TempCent + HumCent + BPCent + (
 courtship_model2 <- lmer(count ~ Box + Replicate + TempCent + HumCent + BPCent + (1|Date), data = courtship_for_analysis)
 
 summary(courtship_model1)
+```
+> summary(courtship_model1)
+Linear mixed model fit by REML ['lmerMod']
+Formula: sum ~ Box + Replicate + TempCent + HumCent + BPCent + (1 | Date)
+   Data: courtship_for_analysis
+
+REML criterion at convergence: 1731.7
+
+Scaled residuals: 
+     Min       1Q   Median       3Q      Max 
+-1.81892 -0.79151 -0.09858  0.86998  2.11869 
+
+Random effects:
+ Groups   Name        Variance Std.Dev.
+ Date     (Intercept)     0      0.0   
+ Residual             70912    266.3   
+Number of obs: 128, groups:  Date, 6
+
+Fixed effects:
+            Estimate Std. Error t value
+(Intercept)   466.97      61.22   7.628
+BoxB           35.51      47.25   0.751
+Replicate     -53.19      25.64  -2.075
+TempCent      -48.93      65.01  -0.753
+HumCent       -56.13      41.35  -1.358
+BPCent        247.66     118.56   2.089
+
+Correlation of Fixed Effects:
+          (Intr) BoxB   Replct TmpCnt HumCnt
+BoxB      -0.360                            
+Replicate -0.839 -0.031                     
+TempCent  -0.270 -0.032  0.332              
+HumCent    0.250 -0.016 -0.286 -0.601       
+BPCent    -0.116 -0.011  0.141  0.307 -0.793
+```
+
 summary(courtship_model2)
+
+```
+> summary(courtship_model2)
+Linear mixed model fit by REML ['lmerMod']
+Formula: count ~ Box + Replicate + TempCent + HumCent + BPCent + (1 |      Date)
+   Data: courtship_for_analysis
+
+REML criterion at convergence: 831.3
+
+Scaled residuals: 
+     Min       1Q   Median       3Q      Max 
+-2.01612 -0.74077  0.03709  0.62407  2.14596 
+
+Random effects:
+ Groups   Name        Variance Std.Dev.
+ Date     (Intercept)  3.095   1.759   
+ Residual             43.660   6.608   
+Number of obs: 128, groups:  Date, 6
+
+Fixed effects:
+            Estimate Std. Error t value
+(Intercept)  15.4231     1.7056   9.043
+BoxB         -0.5163     1.1738  -0.440
+Replicate    -0.9174     0.6483  -1.415
+TempCent      0.8865     2.3783   0.373
+HumCent      -1.2041     1.5148  -0.795
+BPCent        5.3338     4.6521   1.147
+
+Correlation of Fixed Effects:
+          (Intr) BoxB   Replct TmpCnt HumCnt
+BoxB      -0.325                            
+Replicate -0.754 -0.023                     
+TempCent  -0.240 -0.025  0.226              
+HumCent    0.227 -0.011 -0.202 -0.501       
+BPCent    -0.097 -0.007  0.088  0.229 -0.770
+```
 
 plot(allEffects(courtship_model1))
 
