@@ -81,10 +81,17 @@ courtship_for_analysis <- merge(x = pred_var_dat, y = courtSum, by.x="Fly_ID", b
 
 with(courtship_for_analysis,
      boxplot(sum ~ Box))
+```
+![Plot_sumcourtship.png]
+(https://github.com/PaulKnoops/mating_under_predation/blob/master/Rplot%20-%20Bar%20Plot_sumcourtship.png)
 
+```
 with(courtship_for_analysis,
      boxplot(sum ~ Date))
 ```
+![Plot_sum_by_date_not_informative]
+(https://github.com/PaulKnoops/mating_under_predation/blob/master/Rplot%20-%20sum%20by%20date_useless.png)
+
 
 ### A simple version of the analysis
 ```
@@ -101,6 +108,7 @@ courtship_model1 <- lmer(sum ~ Box + Replicate + TempCent + HumCent + BPCent + (
 
 summary(courtship_model1)
 ```
+
 ```
 > summary(courtship_model1)
 Linear mixed model fit by REML ['lmerMod']
@@ -180,18 +188,36 @@ HumCent      0.217  0.011 -0.202 -0.501
 BPCent      -0.100  0.007  0.088  0.229 -0.770
 ```
 
+
 ```
 plot(allEffects(courtship_model1))
+```
+![alleffetsmodel1]
+(https://github.com/PaulKnoops/mating_under_predation/blob/master/Rplot%20-%20AllEffects_courtshipModel1.png)
+```
+plot(allEffects(courtship_model2))
+```
+![alleffectsmodel2]
+(https://github.com/PaulKnoops/mating_under_predation/blob/master/Rplot%20-%20alleffects_courtshipModel2.png)
 
+```
 plot(effect("Box", courtship_model1), main = "Male Time Courting of Immature Female in 900 Seconds",
      ylab = "Time courting (sec)", xlab = "Treatment")
+```
+![court_sum]
+(https://github.com/PaulKnoops/mating_under_predation/blob/master/Rplot%20-%20court_imm_sum.png)
+
+```
 plot(effect("Box", courtship_model2), main = "Number of Male Courtship Bouts to Immature Female in 900 Seconds",
      ylab = "Courtship Bouts", xlab = "Treatment")
-
-
+```
+![court_count]
+(https://github.com/PaulKnoops/mating_under_predation/blob/master/Rplot%20-%20court_count.png)
 
 # Copulation Analysis
 
+```
+#Similar to above for copulation now
 summary(copulation)
 dim(copulation)
 head(copulation)
@@ -207,27 +233,40 @@ head(LatCop)
 
 copul_for_analysis <- merge(x = cop_data, y = LatCop, by.x="Fly_ID", by.y="Fly_ID")
 
-
-
-
 copul_for_analysis$TempCent <- scale(copul_for_analysis$Temp, scale=F)
 copul_for_analysis$HumCent <- scale(copul_for_analysis$Humidity, scale = F)
 copul_for_analysis$BPCent <- scale(copul_for_analysis$deltaBP, scale = F)
+```
+### Simple linear models
 
-
+```
 copul_model1 <- lmer(Cop_latency ~ Box + Replicate + TempCent + HumCent + BPCent + (1|Date), data = copul_for_analysis)
-
-copul_model2 <- lmer(Cop_Duration ~ Box + Replicate + TempCent + HumCent + BPCent + (1|Date), data = copul_for_analysis)
-
 summary(copul_model1)
+```
+
+```
+copul_model2 <- lmer(Cop_Duration ~ Box + Replicate + TempCent + HumCent + BPCent + (1|Date), data = copul_for_analysis)
 summary(copul_model2)
+```
 
+```
 with(copul_for_analysis, boxplot(Cop_latency ~ Box))
+```
+
+```
 with(copul_for_analysis, boxplot(Cop_Duration ~ Box))
+```
 
+```
 plot(allEffects(copul_model1))
+```
 
+```
 plot(effect("Box", copul_model1), main = "Mature Female Copulation Latency Rates with/without predator",
      ylab = "Copulation Latency (Sec)", xlab = "Treatment")
+```
+
+```
 plot(effect("Box", copul_model2), main = "Mature Female Copulation Duration Rates with/without predator",
      ylab = "Copulation Latency (Sec)", xlab="Treatment")
+```
