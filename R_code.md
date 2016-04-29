@@ -1,3 +1,4 @@
+```
 #install.packages("dplyr")
 library(dplyr)
 library(lme4)
@@ -81,6 +82,8 @@ courtship_model1 <- lmer(sum ~ Box + Replicate + TempCent + HumCent + BPCent + (
 courtship_model2 <- lmer(count ~ Box + Replicate + TempCent + HumCent + BPCent + (1|Date), data = courtship_for_analysis)
 
 summary(courtship_model1)
+# Model for changes in sum of courtship duration in a 15 minute (900 seconds) window of observation from T=0 for each different vial
+```
 ```
 > summary(courtship_model1)
 Linear mixed model fit by REML ['lmerMod']
@@ -116,9 +119,9 @@ TempCent  -0.270 -0.032  0.332
 HumCent    0.250 -0.016 -0.286 -0.601       
 BPCent    -0.116 -0.011  0.141  0.307 -0.793
 ```
-
+```
 summary(courtship_model2)
-
+```
 ```
 > summary(courtship_model2)
 Linear mixed model fit by REML ['lmerMod']
@@ -154,7 +157,7 @@ TempCent  -0.240 -0.025  0.226
 HumCent    0.227 -0.011 -0.202 -0.501       
 BPCent    -0.097 -0.007  0.088  0.229 -0.770
 ```
-
+```
 plot(allEffects(courtship_model1))
 
 plot(effect("Box", courtship_model1))
@@ -197,3 +200,4 @@ plot(allEffects(copul_model1))
 
 plot(effect("Box", copul_model1))
 plot(effect("Box", copul_model2))
+```
