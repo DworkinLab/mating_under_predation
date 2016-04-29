@@ -70,6 +70,9 @@ with(courtship_for_analysis,
 with(courtship_for_analysis,
      boxplot(sum ~ Date))
 
+```
+
+```
 
 # A simple version of the analysis
 
