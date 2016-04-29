@@ -7,10 +7,10 @@ library(effects)
 # Bring in the data for mature females (copulation) and Immautre females (courtship)
 copulation <- read.csv("Mature.csv",h=T)
 courtship <- read.csv("Immature.csv",h=T)
-
+```
 # Courtship Analysis
-#
-#
+
+```
 
 # Create unique Fly_ID for each individual with Box (treatment), date, replicate, and vial Number
 courtship$Fly_ID <- with(courtship, paste0(courtship$Box,courtship$Date,courtship$Replicate, courtship$Vial_number))
@@ -80,7 +80,8 @@ courtship_for_analysis$BPCent <- scale(courtship_for_analysis$deltaBP, scale = F
 courtship_model1 <- lmer(sum ~ Box + Replicate + TempCent + HumCent + BPCent + (1|Date), data = courtship_for_analysis)
 
 courtship_model2 <- lmer(count ~ Box + Replicate + TempCent + HumCent + BPCent + (1|Date), data = courtship_for_analysis)
-
+```
+```
 summary(courtship_model1)
 # Model for changes in sum of courtship duration in a 15 minute (900 seconds) window of observation from T=0 for each different vial
 ```
