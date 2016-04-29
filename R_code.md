@@ -161,7 +161,7 @@ BPCent    -0.097 -0.007  0.088  0.229 -0.770
 ```
 plot(allEffects(courtship_model1))
 ```
-
+https://github.com/PaulKnoops/mating_under_predation/blob/master/Rplot-%20allEffects_courtshipSum.png
 
 ```
 plot(effect("Box", courtship_model1))
