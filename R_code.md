@@ -160,15 +160,22 @@ BPCent    -0.097 -0.007  0.088  0.229 -0.770
 ```
 ```
 plot(allEffects(courtship_model1))
+```
 
+
+```
 plot(effect("Box", courtship_model1))
 plot(effect("Box", courtship_model2))
 
 # Make total proportion of time courting
 
+```
+
 
 # Copulation Analysis
 
+
+```
 summary(copulation)
 dim(copulation)
 head(copulation)
