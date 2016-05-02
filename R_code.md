@@ -406,3 +406,31 @@ with(copul_for_analysis2, boxplot(Cop_Duration ~ Box))
 ```
 ![0boxcopdur]
 (https://github.com/PaulKnoops/mating_under_predation/blob/master/Rplot%20-%20copBox_dur_0.png)
+
+
+# Copulation Count
+```
+#Count of mating for each
+byBox <- group_by(copul_for_analysis2, Box)
+byBox
+copCount <- summarise(byBox, count=n())
+copCount
+```
+
+```
+> copCount
+Source: local data frame [2 x 2]
+
+       Box count
+    (fctr) (int)
+1  Control    41
+2 Predator    39
+```
+
+```
+pie(copCount$count, labels = copCount$Box, radius = 1.0)
+```
+
+![copCountPie]
+(https://github.com/PaulKnoops/mating_under_predation/blob/master/Rplot%20-%20countsts.png)
+
