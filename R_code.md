@@ -8,7 +8,7 @@ library(lme4)
 library(effects)
 ```
 ```
-# Bring in the data for mature females (copulation) and Immautre females (courtship)
+# Bring in the data for mature females (copulation) and Immature females (courtship)
 copulation <- read.csv("Mature.csv",h=T)
 courtship <- read.csv("Immature.csv",h=T)
 ```
@@ -338,6 +338,8 @@ plot(allEffects(copul_model1))
 ```
 ![alleffects_lat]
 (https://github.com/PaulKnoops/mating_under_predation/blob/master/Rplot%20-%20alleffects_cop_lat.png)
+
+![alleffects_dur]
 (https://github.com/PaulKnoops/mating_under_predation/blob/master/Rplot%20-%20alleffects_cop_dur.png)
 
 ```
