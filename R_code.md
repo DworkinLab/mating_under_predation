@@ -339,8 +339,6 @@ plot(allEffects(copul_model1))
 ![alleffects_lat]
 (https://github.com/PaulKnoops/mating_under_predation/blob/master/Rplot%20-%20alleffects_cop_lat.png)
 
-![alleffects_dur]
-(https://github.com/PaulKnoops/mating_under_predation/blob/master/Rplot%20-%20alleffects_cop_dur.png)
 
 ```
 plot(allEffects(copul_model2))
