@@ -185,7 +185,7 @@ plot(effect("Box", copul_model12), main = "Mature Female Copulation Latency Rate
      ylab = "Copulation Latency (Sec)", xlab = "Treatment")
 
 plot(effect("Box", copul_model22), main = "Mature Female Copulation Duration Rates with/without predator, 0's removed",
-     ylab = "Copulation Latency (Sec)", xlab="Treatment")
+     ylab = "Copulation Duration (Sec)", xlab="Treatment")
 
 with(copul_for_analysis2, boxplot(Cop_latency ~ Box))
 
@@ -202,10 +202,12 @@ with(copul_for_analysis2, boxplot(Cop_Duration ~ Box))
 
 #Copulation Proportion:
 head(copul_for_analysis)
+copul_for_analysis$copulationSuccess <- ifelse(copul_for_analysis$Cop_latency==0, 0,1)
 length(copul_for_analysis$Cop_Duration)
-cop_prop <- copul_for_analysis %>%
-  group_by(Box) %>%
-  summarise(cop_prop=n()/length(copul_for_analysis$Cop_Duration))
-plot(cop_prop)
 
 
+copprop_mod <- glm(copulationSuccess ~ Box + Replicate + TempCent + HumCent + BPCent + (1|Date), data = copul_for_analysis, family = "binomial")
+summary(copprop_mod)
+plot(allEffects(copprop_mod))
+plot(effect("Box", copprop_mod), main = "Copulation Proportions",
+     ylab = "Copulation Proportion", xlab = "Treatment")

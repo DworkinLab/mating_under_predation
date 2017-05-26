@@ -1,0 +1,89 @@
+---
+title: "Mating With Predation Summary"
+output: html_document
+---
+
+```{r, include=FALSE, warning=FALSE}
+source("Mating_and_Predation_RCode.R")
+```
+
+## Courtship:
+
+###Note: Box == Treatment (Predator vs. Control)
+
+```{r}
+courtship_model1 <- lmer(court_prop ~ Box + Replicate + TempCent + HumCent + BPCent + (1|Date), data = courtship_for_analysis)
+summary(courtship_model1)
+```
+
+```{r}
+plot(effect("Box", courtship_model1), main = "Proportion of Male Time Courting of Immature Female in 900 Seconds",
+     ylab = "Proportion of Time courting (sec)", xlab = "Treatment")
+```
+
+```{r}
+
+courtship_model2 <- lmer(count ~ Box + Replicate + TempCent + HumCent + BPCent + (1|Date), data = courtship_for_analysis)
+
+summary(courtship_model2)
+```
+
+
+```{r}
+plot(effect("Box", courtship_model2), main = "Number of Male Courtship Bouts to Immature Female in 900 Seconds",
+     ylab = "Courtship Bouts", xlab = "Treatment")
+```
+
+
+## Copulation
+
+```{r}
+copul_model1 <- lmer(Cop_latency ~ Box + Replicate + TempCent + HumCent + BPCent + (1|Date), data = copul_for_analysis)
+
+summary(copul_model1)
+
+plot(effect("Box", copul_model1), main = "Mature Female Copulation Latency Rates with/without predator",
+     ylab = "Copulation Latency (Sec)", xlab = "Treatment")
+```
+
+```{r}
+copul_model2 <- lmer(Cop_Duration ~ Box + Replicate + TempCent + HumCent + BPCent + (1|Date), data = copul_for_analysis)
+
+summary(copul_model2)
+
+plot(effect("Box", copul_model2), main = "Mature Female Copulation Duration Rates with/without predator",
+     ylab = "Copulation Duration (Sec)", xlab="Treatment")
+
+```
+
+
+Remove those without copulation occurance
+```{r}
+copul_model12 <- lmer(Cop_latency ~ Box + Replicate + TempCent + HumCent + BPCent + (1|Date), data = copul_for_analysis2)
+
+summary(copul_model12)
+
+plot(effect("Box", copul_model12), main = "Mature Female Copulation Latency Rates with/without predator, 0 removed",
+     ylab = "Copulation Latency (Sec)", xlab = "Treatment")
+```
+
+```{r}
+
+copul_model22 <- lmer(Cop_Duration ~ Box + Replicate + TempCent + HumCent + BPCent + (1|Date), data = copul_for_analysis2)
+
+summary(copul_model22)
+
+plot(effect("Box", copul_model22), main = "Mature Female Copulation Duration Rates with/without predator, 0's removed",
+     ylab = "Copulation Duration (Sec)", xlab="Treatment")
+```
+
+
+Copulation Proportion
+
+```{r}
+copprop_mod <- glm(copulationSuccess ~ Box + Replicate + TempCent + HumCent + BPCent + (1|Date), data = copul_for_analysis, family = "binomial")
+summary(copprop_mod)
+
+plot(effect("Box", copprop_mod), main = "Copulation Proportions",
+     ylab = "Copulation Proportion", xlab = "Treatment")
+```
