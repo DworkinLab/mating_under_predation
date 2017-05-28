@@ -5,7 +5,7 @@
 library(dplyr)
 library(lme4)
 library(effects)
-
+library(ggplot2)
 # Bring in the data for mature females (copulation) and Immature females (courtship)
 copulation <- read.csv("Mature.csv",h=T)
 courtship <- read.csv("Immature.csv",h=T)
