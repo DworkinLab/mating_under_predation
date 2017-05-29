@@ -12,7 +12,6 @@
 #p_eff
 
 
-
 corprop_eff <- effect("Box", courtship_model1)
 corprop_eff <- as.data.frame(corprop_eff)
 corprop_eff$Behaviour <- "Proportion Time Courting"
@@ -33,7 +32,7 @@ corcount_eff$Behaviour <- "Courtship Bouts"
 
 copprop_eff <- effect("Box", copprop_mod)
 copprop_eff <- as.data.frame(copprop_eff)
-copprop_eff$Behaviour <- "Proportion of pairs copulating"
+copprop_eff$Behaviour <- "Proportion Copulation"
 
 coplat_0_eff <- effect("Box", copul_model12)
 coplat_0_eff <- as.data.frame(coplat_0_eff)
@@ -46,5 +45,20 @@ copdur_0_eff$Behaviour <- "Copulation Duration"
 copulation_all <- rbind(coplat_0_eff, copdur_0_eff)
 head(copulation_all)
 gg1 <- ggplot(copulation_all, aes(x=Behaviour, y=fit, fill=Box))
-gg1 + geom_bar() +
-  geom_errorbar(aes(ymin = lower, ymax = upper), size = 1.2, width = 0.2)
+gg1 + geom_bar(stat="identity", position = position_dodge()) +
+  geom_errorbar(aes(ymin = lower, ymax = upper), position = position_dodge(.9), size = 1.2, width = 0.2) + ylab("Time (seconds)")
+
+proportion_all <- rbind(corprop_eff, copprop_eff)
+head(proportion_all)
+gg2 <- ggplot(proportion_all, aes(x=Behaviour, y=fit, fill=Box))
+gg2 + geom_bar(stat="identity", position = position_dodge()) +
+  geom_errorbar(aes(ymin = lower, ymax = upper), position = position_dodge(.9), size = 1.2, width = 0.2) + ylab("Proportion")
+
+gg3 <- ggplot(corcount_eff, aes(x=Behaviour, y=fit, fill=Box))
+gg3 + geom_bar(stat="identity", position= position_dodge()) +
+  geom_errorbar(aes(ymin = lower, ymax = upper), position = position_dodge(.9), size = 1.2, width = 0.2) + ylab("Count")
+
+allallall <- rbind(corcount_eff, corprop_eff, copdur_0_eff, coplat_0_eff, copprop_eff)
+ggAll <- ggplot(allallall, aes(x=Behaviour, y=fit, fill=Box))
+ggAll + geom_bar(stat="identity", position= position_dodge()) +
+  geom_errorbar(aes(ymin = lower, ymax = upper), position = position_dodge(.9), size = 1.2, width = 0.2) + ylab("Count")
