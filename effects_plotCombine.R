@@ -11,6 +11,11 @@
 #  theme(axis.text.x = element_text(angle=90, hjust = 1))
 #p_eff
 
+courtship_time_sum <- lmer(sum ~ Box + Replicate + TempCent + HumCent + BPCent + (1|Date), data = courtship_for_analysis)
+corsum_eff <- effect("Box", courtship_time_sum)
+corsum_eff <- as.data.frame(corsum_eff)
+corsum_eff$Behaviour <- "Courtship Latency"
+
 
 corprop_eff <- effect("Box", courtship_model1)
 corprop_eff <- as.data.frame(corprop_eff)
@@ -62,3 +67,11 @@ allallall <- rbind(corcount_eff, corprop_eff, copdur_0_eff, coplat_0_eff, coppro
 ggAll <- ggplot(allallall, aes(x=Behaviour, y=fit, fill=Box))
 ggAll + geom_bar(stat="identity", position= position_dodge()) +
   geom_errorbar(aes(ymin = lower, ymax = upper), position = position_dodge(.9), size = 1.2, width = 0.2) + ylab("Count")
+
+
+
+Times <- rbind(coplat_0_eff, copdur_0_eff, corsum_eff)
+head(Times)
+ggtime <- ggplot(Times, aes(x=Behaviour, y=fit, fill=Box))
+ggtime + geom_bar(stat="identity", position= position_dodge()) +
+  geom_errorbar(aes(ymin = lower, ymax = upper), position = position_dodge(.9), size = 1.2, width = 0.2) + ylab("Time (Seconds)")
