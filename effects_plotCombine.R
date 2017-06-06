@@ -14,7 +14,7 @@
 courtship_time_sum <- lmer(sum ~ Box + Replicate + TempCent + HumCent + BPCent + (1|Date), data = courtship_for_analysis)
 corsum_eff <- effect("Box", courtship_time_sum)
 corsum_eff <- as.data.frame(corsum_eff)
-corsum_eff$Behaviour <- "Courtship Latency"
+corsum_eff$Behaviour <- "Courtship Duration"
 
 
 corprop_eff <- effect("Box", courtship_model1)
