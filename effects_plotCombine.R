@@ -15,17 +15,20 @@ courtship_time_sum <- lmer(sum ~ Box + Replicate + TempCent + HumCent + BPCent +
 corsum_eff <- effect("Box", courtship_time_sum)
 corsum_eff <- as.data.frame(corsum_eff)
 corsum_eff$Behaviour <- "Courtship Duration"
-
+summary(courtship_time_sum)
+car::Anova(courtship_time_sum)
 
 corprop_eff <- effect("Box", courtship_model1)
 corprop_eff <- as.data.frame(corprop_eff)
 corprop_eff$Behaviour <- "Proportion Time Courting"
+summary(courtship_model1)
+car::Anova(courtship_model1)
 #make column of the names of group (will be the x axis)
 
 corcount_eff<- effect("Box", courtship_model2)
 corcount_eff <- as.data.frame(corcount_eff)
 corcount_eff$Behaviour <- "Courtship Bouts"
-
+car::Anova(courtship_model2)
 #coplat_eff <- effect("Box", copul_model1)
 #coplat_eff <- as.data.frame(coplat_eff)
 #coplat_eff$Behaviour <- "Copulation Latency"
@@ -38,14 +41,19 @@ corcount_eff$Behaviour <- "Courtship Bouts"
 copprop_eff <- effect("Box", copprop_mod)
 copprop_eff <- as.data.frame(copprop_eff)
 copprop_eff$Behaviour <- "Proportion Copulation"
+car::Anova(copprop_mod)
 
 coplat_0_eff <- effect("Box", copul_model12)
 coplat_0_eff <- as.data.frame(coplat_0_eff)
 coplat_0_eff$Behaviour <- "Copulation Latency"
+car::Anova(copul_model12)
+
 
 copdur_0_eff <- effect("Box", copul_model22)
 copdur_0_eff <- as.data.frame(copdur_0_eff)
 copdur_0_eff$Behaviour <- "Copulation Duration"
+summary(copul_model22)
+car::Anova(copul_model22)
 
 copulation_all <- rbind(coplat_0_eff, copdur_0_eff)
 head(copulation_all)
@@ -72,6 +80,13 @@ ggAll + geom_bar(stat="identity", position= position_dodge()) +
 
 Times <- rbind(coplat_0_eff, copdur_0_eff, corsum_eff)
 head(Times)
-ggtime <- ggplot(Times, aes(x=Behaviour, y=fit, fill=Box))
-ggtime + geom_bar(stat="identity", position= position_dodge()) +
-  geom_errorbar(aes(ymin = lower, ymax = upper), position = position_dodge(.9), size = 1.2, width = 0.2) + ylab("Time (Seconds)")
+colnames(Times) <- c("Treatment", "fit", "se", "lower", "upper", "Behaviour")
+ggtime <- ggplot(Times, aes(x=Behaviour, y=fit, fill=Treatment))
+ggtime + geom_bar(stat="identity", 
+                  position= position_dodge()) + 
+  geom_errorbar(aes(ymin = lower, ymax = upper), 
+                position = position_dodge(.9), size = 1.2,
+                width = 0.2) + 
+  ylab("Time (sec)") + 
+  xlab("") +
+  theme(text = element_text(size=15), axis.text.x= element_text(size=15))
