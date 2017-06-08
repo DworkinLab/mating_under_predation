@@ -82,7 +82,7 @@ Times <- rbind(coplat_0_eff, copdur_0_eff, corsum_eff)
 head(Times)
 colnames(Times) <- c("Treatment", "fit", "se", "lower", "upper", "Behaviour")
 ggtime <- ggplot(Times, aes(x=Behaviour, y=fit, fill=Treatment))
-ggtime + geom_bar(stat="identity", 
+ggtime2 <- ggtime + geom_bar(stat="identity", 
                   position= position_dodge()) + 
   geom_errorbar(aes(ymin = lower, ymax = upper), 
                 position = position_dodge(.9), size = 1.2,
@@ -90,3 +90,6 @@ ggtime + geom_bar(stat="identity",
   ylab("Time (sec)") + 
   xlab("") +
   theme(text = element_text(size=15), axis.text.x= element_text(size=15))
+
+ggtime2 + scale_fill_manual(values=c("#999999", "#E69F00"))
+#scale_fill_manual(values=c("#999999", "#E69F00", "#56B4E9"))
