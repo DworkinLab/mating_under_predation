@@ -57,6 +57,7 @@ car::Anova(copul_model22)
 
 copulation_all <- rbind(coplat_0_eff, copdur_0_eff)
 head(copulation_all)
+
 gg1 <- ggplot(copulation_all, aes(x=Behaviour, y=fit, fill=Box))
 gg1 + geom_bar(stat="identity", position = position_dodge()) +
   geom_errorbar(aes(ymin = lower, ymax = upper), position = position_dodge(.9), size = 1.2, width = 0.2) + ylab("Time (seconds)")
@@ -93,3 +94,4 @@ ggtime2 <- ggtime + geom_bar(stat="identity",
 
 ggtime2 + scale_fill_manual(values=c("#999999", "#E69F00"))
 #scale_fill_manual(values=c("#999999", "#E69F00", "#56B4E9"))
+
