@@ -1,9 +1,6 @@
 ## Official Analysis: mating project
 
-library(dplyr)
-library(lme4)
-library(effects)
-library(ggplot2)
+source("packages.R")
 
 ######################
 ## Courtship Analysis
@@ -78,7 +75,7 @@ summary(courtship_model1)
 car::Anova(courtship_model1)
 
 gg_courtProp <- ggplot(corprop_eff, aes(x=Behaviour, y=fit, colour=Treatment))
-gg_courtProp + geom_point(stat="identity", 
+gg_courtProp2 <- gg_courtProp + geom_point(stat="identity", 
                             position = position_dodge(.9), size=5) +
   geom_errorbar(aes(ymin = lower, ymax = upper), 
                 position = position_dodge(.9), 
@@ -89,6 +86,8 @@ gg_courtProp + geom_point(stat="identity",
   ylim(0,1) +
   theme(text = element_text(size=15), axis.text.x= element_text(size=15)) +
   scale_color_manual(values=c("#999999", "#E69F00"))
+
+print(gg_courtProp2)
 
 courtship_model2 <- lmer(count ~ Treatment + Replicate + 
                            (1|Date), 
@@ -103,7 +102,7 @@ summary(courtship_model2)
 car::Anova(courtship_model2)
 
 gg_courtcount <- ggplot(corcount_eff, aes(x=Behaviour, y=fit, colour=Treatment))
-gg_courtcount + geom_point(stat="identity", 
+gg_courtcount2 <- gg_courtcount + geom_point(stat="identity", 
                   position = position_dodge(.9), size=5) +
   geom_errorbar(aes(ymin = lower, ymax = upper), 
                 position = position_dodge(.9), 
@@ -114,6 +113,10 @@ gg_courtcount + geom_point(stat="identity",
   ylim(10,18) +
   theme(text = element_text(size=15), axis.text.x= element_text(size=15)) +
   scale_color_manual(values=c("#999999", "#E69F00"))
+
+print(gg_courtcount2)
+
+multiplot(gg_courtProp2, gg_courtcount2)
 
 
 
@@ -155,7 +158,7 @@ summary(copprop_mod)
 car::Anova(copprop_mod)
 
 gg_copprop <- ggplot(copprop_eff, aes(x=Behaviour, y=fit, colour=Treatment))
-gg_copprop + geom_point(stat="identity", 
+gg_copprop2 <- gg_copprop + geom_point(stat="identity", 
                            position = position_dodge(.9), size=5) +
   geom_errorbar(aes(ymin = lower, ymax = upper), 
                 position = position_dodge(.9), 
@@ -167,7 +170,7 @@ gg_copprop + geom_point(stat="identity",
   theme(text = element_text(size=15), axis.text.x= element_text(size=15)) +
   scale_color_manual(values=c("#999999", "#E69F00"))
 
-
+print(gg_copprop2)
 
 # Copulation Latency
 
@@ -181,7 +184,7 @@ summary(copul_lat_mod)
 car::Anova(copul_lat_mod)
 
 gg_coplat <- ggplot(coplat_0_eff, aes(x=Behaviour, y=fit, colour=Treatment))
-gg_coplat + geom_point(stat="identity", 
+gg_coplat2 <- gg_coplat + geom_point(stat="identity", 
                         position = position_dodge(.9), size=5) +
   geom_errorbar(aes(ymin = lower, ymax = upper), 
                 position = position_dodge(.9), 
@@ -193,7 +196,7 @@ gg_coplat + geom_point(stat="identity",
   theme(text = element_text(size=15), axis.text.x= element_text(size=15)) +
   scale_color_manual(values=c("#999999", "#E69F00"))
 
-
+print(gg_coplat2)
 
 # Copulation Duration:
 
@@ -207,7 +210,7 @@ summary(copul_dur_Mod)
 car::Anova(copul_dur_Mod)
 
 gg_copdur <- ggplot(copdur_0_eff, aes(x=Behaviour, y=fit, colour=Treatment))
-gg_copdur + geom_point(stat="identity", 
+gg_copdur2 <- gg_copdur + geom_point(stat="identity", 
                         position = position_dodge(.9), size=5) +
   geom_errorbar(aes(ymin = lower, ymax = upper), 
                 position = position_dodge(.9), 
@@ -219,3 +222,7 @@ gg_copdur + geom_point(stat="identity",
   theme(text = element_text(size=15), axis.text.x= element_text(size=15)) +
   scale_color_manual(values=c("#999999", "#E69F00"))
 
+print(gg_copdur2)
+
+
+multiplot(gg_copdur2, gg_coplat2, gg_copprop2, cols=2)
