@@ -182,6 +182,7 @@ coplat_0_eff <- as.data.frame(coplat_0_eff)
 coplat_0_eff$Behaviour <- "Copulation Latency"
 summary(copul_lat_mod)
 car::Anova(copul_lat_mod)
+summary(copulation2)
 
 gg_coplat <- ggplot(coplat_0_eff, aes(x=Behaviour, y=fit, colour=Treatment))
 gg_coplat2 <- gg_coplat + geom_point(stat="identity", 
