@@ -84,7 +84,10 @@ gg_courtProp2 <- gg_courtProp + geom_point(stat="identity",
   ylab("Proportion") + 
   xlab("") +
   ylim(0,1) +
-  theme(text = element_text(size=15), axis.text.x= element_text(size=15)) +
+  theme(text = element_text(size=20), 
+        axis.text.x=element_blank(),
+        #axis.text.x= element_text(size=15),
+        axis.ticks.x=element_blank()) +
   scale_color_manual(values=c("#999999", "#E69F00"))
 
 print(gg_courtProp2)
@@ -102,21 +105,25 @@ summary(courtship_model2)
 car::Anova(courtship_model2)
 
 gg_courtcount <- ggplot(corcount_eff, aes(x=Behaviour, y=fit, colour=Treatment))
+#gg_courtcount <- ggplot(corcount_eff, aes(x=Treatment, y=fit))
 gg_courtcount2 <- gg_courtcount + geom_point(stat="identity", 
                   position = position_dodge(.9), size=5) +
   geom_errorbar(aes(ymin = lower, ymax = upper), 
                 position = position_dodge(.9), 
                 size = 1.2, 
                 width = 0.2) + 
-  ylab("Count") + 
+  ylab("Behavioural Count") + 
   xlab("") +
-  ylim(10,18) +
-  theme(text = element_text(size=15), axis.text.x= element_text(size=15)) +
+  ylim(9,20) +
+  theme(text = element_text(size=20), 
+               axis.text.x=element_blank(),
+               #axis.text.x= element_text(size=15),
+               axis.ticks.x=element_blank()) +
   scale_color_manual(values=c("#999999", "#E69F00"))
 
 print(gg_courtcount2)
 
-multiplot(gg_courtProp2, gg_courtcount2)
+multiplot(gg_courtProp2, gg_courtcount2, cols=2)
 
 
 
@@ -167,7 +174,10 @@ gg_copprop2 <- gg_copprop + geom_point(stat="identity",
   ylab("Proportion") + 
   xlab("") +
   ylim(0,1) +
-  theme(text = element_text(size=15), axis.text.x= element_text(size=15)) +
+  theme(text = element_text(size=20), 
+        axis.text.x=element_blank(),
+        #axis.text.x= element_text(size=15),
+        axis.ticks.x=element_blank()) +
   scale_color_manual(values=c("#999999", "#E69F00"))
 
 print(gg_copprop2)
@@ -194,7 +204,10 @@ gg_coplat2 <- gg_coplat + geom_point(stat="identity",
   ylab("Time (sec)") + 
   xlab("") +
   ylim(300,800) +
-  theme(text = element_text(size=15), axis.text.x= element_text(size=15)) +
+  theme(text = element_text(size=20), 
+        axis.text.x=element_blank(),
+        #axis.text.x= element_text(size=15),
+        axis.ticks.x=element_blank()) +
   scale_color_manual(values=c("#999999", "#E69F00"))
 
 print(gg_coplat2)
@@ -220,7 +233,10 @@ gg_copdur2 <- gg_copdur + geom_point(stat="identity",
   ylab("Time (sec)") + 
   xlab("") +
   ylim(700,1000) +
-  theme(text = element_text(size=15), axis.text.x= element_text(size=15)) +
+  theme(text = element_text(size=20), 
+        axis.text.x=element_blank(),
+        #axis.text.x= element_text(size=15),
+        axis.ticks.x=element_blank()) +
   scale_color_manual(values=c("#999999", "#E69F00"))
 
 print(gg_copdur2)
