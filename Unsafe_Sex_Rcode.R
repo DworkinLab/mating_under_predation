@@ -1,15 +1,15 @@
 ## Official Analysis: mating project
-
-source("packages.R")
+getwd()
+source("/Users/paulknoops/Bioinformatics/R-projects_git/mating_under_predation/packages.R")
 
 ######################
 ## Courtship Analysis
-courtship <- read.csv("Immature.csv",h=T)
+courtship <- read.csv("/Users/paulknoops/Bioinformatics/R-projects_git/mating_under_predation/Immature.csv",h=T)
 
 #Remove Temp, Humidity and BP
 courtship <- subset(courtship, select = 
                       -c(Temp, Humidity, BP.12.00.am, BP.8.00.Am, BP.Room ))
-
+head(courtship)
 
 # Change time (in HH:MM:SS) format to seconds (One had a value of -1, not sure, but changed to 0)
 # Start time of behaviours will be the time at end of courtship bout of full trial (trial_latency_behav_end minus the courtship duration)
@@ -63,8 +63,8 @@ courtship2 <- courtship2 %>%
             court_prop=sum(relativeCourtDuration/900))
 
 #The Models:
-
-courtship_model1 <- lmer(court_prop ~ Treatment + Replicate + 
+head(courtship2)
+courtship_model1 <- lmer(court_prop ~ Treatment + 
                            (1|Date), 
                          data=courtship2 )
 
@@ -74,25 +74,26 @@ corprop_eff$Behaviour <- "Proportion Time Courting"
 summary(courtship_model1)
 car::Anova(courtship_model1)
 
-gg_courtProp <- ggplot(corprop_eff, aes(x=Behaviour, y=fit, colour=Treatment))
-gg_courtProp2 <- gg_courtProp + geom_point(stat="identity", 
-                            position = position_dodge(.9), size=5) +
-  geom_errorbar(aes(ymin = lower, ymax = upper), 
-                position = position_dodge(.9), 
-                size = 1.2, 
-                width = 0.2) + 
+gg_courtProp <- ggplot(corprop_eff, aes(x=Treatment, y=fit, colour=Treatment))
+gg_courtProp2 <- gg_courtProp + 
   ylab("Proportion") + 
   xlab("") +
   ylim(0,1) +
+  geom_point(stat="identity", 
+             position = position_dodge(.9), size=5, show.legend = F) +
+  geom_errorbar(aes(ymin = lower, ymax = upper), 
+                position = position_dodge(.9), 
+                size = 1.2, 
+                width = 0.2, show.legend = F) + 
   theme(text = element_text(size=20), 
-        axis.text.x=element_blank(),
-        #axis.text.x= element_text(size=15),
+        #     axis.text.x=element_blank(),
+        axis.text.x= element_text(size=15),
         axis.ticks.x=element_blank()) +
   scale_color_manual(values=c("#999999", "#E69F00"))
 
 print(gg_courtProp2)
 
-courtship_model2 <- lmer(count ~ Treatment + Replicate + 
+courtship_model2 <- lmer(count ~ Treatment  + 
                            (1|Date), 
                          data = courtship2)
 
@@ -104,21 +105,22 @@ corcount_eff$Behaviour <- "Courtship Bouts"
 summary(courtship_model2)
 car::Anova(courtship_model2)
 
-gg_courtcount <- ggplot(corcount_eff, aes(x=Behaviour, y=fit, colour=Treatment))
+gg_courtcount <- ggplot(corcount_eff, aes(x=Treatment, y=fit, colour=Treatment))
 #gg_courtcount <- ggplot(corcount_eff, aes(x=Treatment, y=fit))
-gg_courtcount2 <- gg_courtcount + geom_point(stat="identity", 
-                  position = position_dodge(.9), size=5) +
-  geom_errorbar(aes(ymin = lower, ymax = upper), 
-                position = position_dodge(.9), 
-                size = 1.2, 
-                width = 0.2) + 
+gg_courtcount2 <- gg_courtcount + 
   ylab("Behavioural Count") + 
   xlab("") +
   ylim(9,20) +
+  geom_point(stat="identity", 
+             position = position_dodge(.9), size=5, show.legend = F) +
+  geom_errorbar(aes(ymin = lower, ymax = upper), 
+                position = position_dodge(.9), 
+                size = 1.2, 
+                width = 0.2, show.legend = F) + 
   theme(text = element_text(size=20), 
-               axis.text.x=element_blank(),
-               #axis.text.x= element_text(size=15),
-               axis.ticks.x=element_blank()) +
+        #     axis.text.x=element_blank(),
+        axis.text.x= element_text(size=15),
+        axis.ticks.x=element_blank()) +
   scale_color_manual(values=c("#999999", "#E69F00"))
 
 print(gg_courtcount2)
@@ -131,7 +133,7 @@ multiplot(gg_courtProp2, gg_courtcount2, cols=2)
 ###############
 ## Copulation Analysis
 
-copulation <- read.csv("Mature.csv",h=T)
+copulation <- read.csv("/Users/paulknoops/Bioinformatics/R-projects_git/mating_under_predation/Mature.csv",h=T)
 
 #Change box to treatment and to Predator vs. Control
 copulation$Treatment <- ifelse(copulation$Box=="C", 
@@ -155,7 +157,7 @@ copulation2 <- copulation[!(copulation$Cop_latency==0),]
 ## Models:
 
 #copulation proportion
-copprop_mod <- glm(copulationSuccess ~ Treatment + Replicate + (1|Date),
+copprop_mod <- glmer(copulationSuccess ~ Treatment + (1|Date),
                    data = copulation, family = "binomial")
 
 copprop_eff <- effect("Treatment", copprop_mod)
@@ -164,19 +166,20 @@ copprop_eff$Behaviour <- "Proportion Copulation"
 summary(copprop_mod)
 car::Anova(copprop_mod)
 
-gg_copprop <- ggplot(copprop_eff, aes(x=Behaviour, y=fit, colour=Treatment))
-gg_copprop2 <- gg_copprop + geom_point(stat="identity", 
-                           position = position_dodge(.9), size=5) +
-  geom_errorbar(aes(ymin = lower, ymax = upper), 
-                position = position_dodge(.9), 
-                size = 1.2, 
-                width = 0.2) + 
+gg_copprop <- ggplot(copprop_eff, aes(x=Treatment, y=fit, colour=Treatment))
+gg_copprop2 <- gg_copprop +   
   ylab("Proportion") + 
   xlab("") +
   ylim(0,1) +
+  geom_point(stat="identity", 
+             position = position_dodge(.9), size=5, show.legend = F) +
+  geom_errorbar(aes(ymin = lower, ymax = upper), 
+                position = position_dodge(.9), 
+                size = 1.2, 
+                width = 0.2, show.legend = F) + 
   theme(text = element_text(size=20), 
-        axis.text.x=element_blank(),
-        #axis.text.x= element_text(size=15),
+        #     axis.text.x=element_blank(),
+        axis.text.x= element_text(size=15),
         axis.ticks.x=element_blank()) +
   scale_color_manual(values=c("#999999", "#E69F00"))
 
@@ -184,7 +187,7 @@ print(gg_copprop2)
 
 # Copulation Latency
 
-copul_lat_mod <- lmer(Cop_latency ~ Treatment + Replicate + (1|Date), 
+copul_lat_mod <- lmer(Cop_latency ~ Treatment + (1|Date), 
                       data = copulation2)
 
 coplat_0_eff <- effect("Treatment", copul_lat_mod)
@@ -194,19 +197,20 @@ summary(copul_lat_mod)
 car::Anova(copul_lat_mod)
 summary(copulation2)
 
-gg_coplat <- ggplot(coplat_0_eff, aes(x=Behaviour, y=fit, colour=Treatment))
-gg_coplat2 <- gg_coplat + geom_point(stat="identity", 
-                        position = position_dodge(.9), size=5) +
-  geom_errorbar(aes(ymin = lower, ymax = upper), 
-                position = position_dodge(.9), 
-                size = 1.2, 
-                width = 0.2) + 
+gg_coplat <- ggplot(coplat_0_eff, aes(x=Treatment, y=fit, colour=Treatment))
+gg_coplat2 <- gg_coplat +
   ylab("Time (sec)") + 
   xlab("") +
   ylim(300,800) +
+  geom_point(stat="identity", 
+             position = position_dodge(.9), size=5, show.legend = F) +
+  geom_errorbar(aes(ymin = lower, ymax = upper), 
+                position = position_dodge(.9), 
+                size = 1.2, 
+                width = 0.2, show.legend = F) + 
   theme(text = element_text(size=20), 
-        axis.text.x=element_blank(),
-        #axis.text.x= element_text(size=15),
+        #     axis.text.x=element_blank(),
+        axis.text.x= element_text(size=15),
         axis.ticks.x=element_blank()) +
   scale_color_manual(values=c("#999999", "#E69F00"))
 
@@ -214,7 +218,7 @@ print(gg_coplat2)
 
 # Copulation Duration:
 
-copul_dur_Mod <- lmer(Cop_Duration ~ Treatment + Replicate + (1|Date), 
+copul_dur_Mod <- lmer(Cop_Duration ~ Treatment + (1|Date), 
                       data = copulation2)
 
 copdur_0_eff <- effect("Treatment", copul_dur_Mod)
@@ -223,19 +227,20 @@ copdur_0_eff$Behaviour <- "Copulation Duration"
 summary(copul_dur_Mod)
 car::Anova(copul_dur_Mod)
 
-gg_copdur <- ggplot(copdur_0_eff, aes(x=Behaviour, y=fit, colour=Treatment))
-gg_copdur2 <- gg_copdur + geom_point(stat="identity", 
-                        position = position_dodge(.9), size=5) +
-  geom_errorbar(aes(ymin = lower, ymax = upper), 
-                position = position_dodge(.9), 
-                size = 1.2, 
-                width = 0.2) + 
+gg_copdur <- ggplot(copdur_0_eff, aes(x=Treatment, y=fit, colour=Treatment))
+gg_copdur2 <- gg_copdur + 
   ylab("Time (sec)") + 
   xlab("") +
   ylim(700,1000) +
+  geom_point(stat="identity", 
+                        position = position_dodge(.9), size=5, show.legend = F) +
+  geom_errorbar(aes(ymin = lower, ymax = upper), 
+                position = position_dodge(.9), 
+                size = 1.2, 
+                width = 0.2, show.legend = F) + 
   theme(text = element_text(size=20), 
-        axis.text.x=element_blank(),
-        #axis.text.x= element_text(size=15),
+   #     axis.text.x=element_blank(),
+        axis.text.x= element_text(size=15),
         axis.ticks.x=element_blank()) +
   scale_color_manual(values=c("#999999", "#E69F00"))
 

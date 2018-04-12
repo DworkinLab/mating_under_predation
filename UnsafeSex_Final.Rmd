@@ -1,0 +1,44 @@
+---
+title: "Mating With Predation Summary"
+output: html_document
+---
+
+```{r, include=F, warning=F, echo=F}
+source("Unsafe_Sex_Rcode.R")
+```
+
+## Courtship:
+
+### Proportion of time courting in 15 minutes
+```{r}
+summary(courtship_model1)
+print(gg_courtProp2)
+```
+
+### Number of Courtship Bouts
+
+```{r}
+summary(courtship_model2)
+print(gg_courtcount2)
+```
+
+## Copulation
+
+### Copulation occurance proportion
+```{r}
+summary(copprop_mod)
+print(gg_copprop2)
+```
+
+### Copulation Latency
+```{r}
+summary(copul_lat_mod)
+print(gg_coplat2)
+```
+
+### Copulation Duration
+```{r}
+summary(copul_dur_Mod)
+print(gg_copdur2)
+```
+

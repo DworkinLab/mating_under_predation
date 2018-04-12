@@ -211,3 +211,4 @@ summary(copprop_mod)
 plot(allEffects(copprop_mod))
 plot(effect("Box", copprop_mod), main = "Copulation Proportions",
      ylab = "Copulation Proportion", xlab = "Treatment")
+
